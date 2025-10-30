@@ -1,0 +1,25 @@
+1001
+Nguyen Van An
+20/05/2002
+Nam
+CNTT1
+1002
+Tran Thi Binh
+15/11/2003
+Nu
+CNTT2
+1003
+Le Van Chung
+08/03/2002
+Nam
+DIENTU
+1004
+Phan Thi Dao
+29/09/2004
+Nu
+KINHTE
+1005
+Hoang Viet Hung
+12/07/2001
+Nam
+CNTT1

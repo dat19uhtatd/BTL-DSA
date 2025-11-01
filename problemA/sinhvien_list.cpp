@@ -24,7 +24,6 @@ public:
         return a.size();
     }
 
-    // Kiểm tra mã sinh viên trùng
     bool _filter(const SinhVien &x) {
         for (auto &sv : a) {
             if (x._msv() == sv._msv()) {
@@ -35,7 +34,6 @@ public:
         return true;
     }
 
-    // Tạo danh sách sinh viên nhập từ bàn phím
     void create() {
         while (true) {
             SinhVien x;
@@ -57,7 +55,6 @@ public:
         }
     }
 
-    // Đọc dữ liệu sinh viên từ file
     void readFromFile(const string &filename) {
         ifstream file(filename);
         if (!file.is_open()) {

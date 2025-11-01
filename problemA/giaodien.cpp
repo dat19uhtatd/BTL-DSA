@@ -1,11 +1,11 @@
 #include <iostream>
 #include "sinhvien_list.cpp"
-#include <string> // Bổ sung để dùng string cho tên file
+#include <string> 
 
 #ifndef APP_CPP
 #define APP_CPP
 
-using namespace std; // Sử dụng namespace std
+using namespace std; 
 
 class App {
     ListSinhVien a;
@@ -27,8 +27,8 @@ private:
             cout << "\t4. Tim kiem sinh vien\n";
             cout << "\t5. Xoa mot sinh vien\n";
             cout << "\t6. Sap xep sinh vien\n";
-            cout << "\t7. Nhap du lieu tu FILE\n"; // Tùy chọn mới
-            cout << "\t8. Thoat chuong trinh\n";  // Tùy chọn thoát được chuyển xuống 8
+            cout << "\t7. Nhap du lieu tu FILE\n"; 
+            cout << "\t8. Thoat chuong trinh\n";  
             cout << "\t-----------------------------------------------------------\n";
             cout << "Chon thao tac: ";
             int n;
@@ -41,8 +41,8 @@ private:
                 case 4: search(); break;
                 case 5: remove(); break;
                 case 6: sort(); break;
-                case 7: importFile(); break; // Gọi hàm nhập file
-                case 8: return;             // Thoát chương trình
+                case 7: importFile(); break; 
+                case 8: return;             
                 default: 
                     cout << "Lua chon khong hop le!\n";
                     system("pause");
@@ -120,12 +120,11 @@ private:
         system("pause");
     }
     
-    // HÀM MỚI: Xử lý nhập file
     void importFile() {
         system("cls");
         string filename;
         cout << "Nhap ten file du lieu (vi du: data.txt). File phai co 5 dong du lieu cho moi sinh vien (MSV, HoTen, NgaySinh, GioiTinh, Lop):\n";
-        cin.ignore(); // Đảm bảo bộ đệm sạch trước khi dùng getline
+        cin.ignore(); 
         cout << "Ten file: ";
         getline(cin, filename); 
         

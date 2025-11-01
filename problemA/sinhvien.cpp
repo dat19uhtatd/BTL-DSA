@@ -9,14 +9,13 @@ using namespace std;
 
 class SinhVien {
 private:
-    int msv;               // Mã sinh viên
-    string hoTen;          // Họ và tên
-    string ngaySinh;       // Ngày sinh
-    string gioiTinh;       // Giới tính
-    string lop;            // Lớp
+    int msv;               
+    string hoTen;          
+    string ngaySinh;       
+    string gioiTinh;       
+    string lop;            
 
 public:
-    // ====== Constructor ======
     SinhVien() {
         msv = 0;
         hoTen = "";
@@ -33,7 +32,6 @@ public:
         this->lop = lop;
     }
 
-    // ====== Getter (thêm const để có thể gọi từ đối tượng const) ======
     int _msv() const { return msv; }
     string _hoTen() const { return hoTen; }
     string _ngaySinh() const { return ngaySinh; }
@@ -68,7 +66,6 @@ public:
         return in;
     }
 
-    // ====== Toán tử xuất dữ liệu ======
     friend ostream &operator<<(ostream &out, const SinhVien &sv) {
         out << left
             << setw(15) << sv.msv

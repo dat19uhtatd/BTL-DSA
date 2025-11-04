@@ -1,0 +1,16 @@
+CT101|Lap trinh C co ban|3
+CT102|Cau truc du lieu va giai thuat|4
+CT103|Co so du lieu|3
+CT104|Lap trinh huong doi tuong|3
+CT105|Mang may tinh|2
+CT106|He dieu hanh|3
+CT107|Phan tich thiet ke he thong|3
+CT108|Lap trinh web co ban|3
+CT109|Lap trinh web nang cao|3
+CT110|Tri tue nhan tao|3
+CT111|Hoc may|3
+CT112|An toan thong tin|2
+CT113|Lap trinh di dong|3
+CT114|Nhap mon cong nghe phan mem|2
+CT115|Du an phan mem|4
+

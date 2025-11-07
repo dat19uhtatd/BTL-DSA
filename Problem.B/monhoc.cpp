@@ -1,127 +1,128 @@
 #include <iostream>
 #include <fstream>
-#include <cstring>
-#include <cstdlib>
+#include <vector>
+#include <string>
+#include <sstream>
+#include <cstdlib>  // cho atoi
 using namespace std;
 
+// ====== C?u trúc môn h?c ======
 struct MonHoc {
-    char ma[20];
-    char ten[100];
+    string ma;
+    string ten;
     int tinchi;
 };
 
-void docFile(MonHoc ds[], int &n, const char *tenFile) {
-    ifstream f(tenFile);
-    if (!f) {
-        cout << "Khong tim thay file. Bat dau voi danh sach rong.\n";
-        n = 0;
+// ====== Đ?c d? li?u t? file ======
+void docFile(vector<MonHoc> &ds, const string &tenFile) {
+    ifstream f(tenFile.c_str());
+    if (!f.is_open()) {
+        cout << "Khong tim thay file " << tenFile << ", bat dau voi danh sach rong.\n";
         return;
     }
 
-    n = 0;
-    while (!f.eof()) {
+    ds.clear();
+    string dong;
+    while (getline(f, dong)) {
+        stringstream ss(dong);
         MonHoc mh;
-        char line[200];
-        f.getline(line, 200);
-        if (strlen(line) == 0) continue;
+        string tinchiStr;
 
-        // tách d? li?u b?ng d?u |
-        char *token = strtok(line, "|");
-        if (token) strcpy(mh.ma, token);
-        token = strtok(NULL, "|");
-        if (token) strcpy(mh.ten, token);
-        token = strtok(NULL, "|");
-        if (token) mh.tinchi = atoi(token);
+        getline(ss, mh.ma, '|');
+        getline(ss, mh.ten, '|');
+        getline(ss, tinchiStr, '|');
 
-        ds[n++] = mh;
+        mh.tinchi = atoi(tinchiStr.c_str());
+        ds.push_back(mh);
     }
-
     f.close();
-    cout << "Da doc " << n << " mon hoc tu file.\n";
+    cout << "Da doc " << ds.size() << " mon hoc tu file.\n";
 }
 
-void ghiFile(MonHoc ds[], int n, const char *tenFile) {
-    ofstream f(tenFile);
-    for (int i = 0; i < n; i++) {
+// ====== Ghi d? li?u ra file ======
+void ghiFile(const vector<MonHoc> &ds, const string &tenFile) {
+    ofstream f(tenFile.c_str());
+    if (!f.is_open()) {
+        cout << "Khong the mo file de ghi!\n";
+        return;
+    }
+
+    for (size_t i = 0; i < ds.size(); i++) {
         f << ds[i].ma << "|" << ds[i].ten << "|" << ds[i].tinchi << "\n";
     }
     f.close();
-    cout << "Da luu du lieu vao file.\n";
+    cout << "Da luu du lieu vao file " << tenFile << ".\n";
 }
 
-void themMonHoc(MonHoc ds[], int &n) {
+// ====== Thêm môn h?c ======
+void themMonHoc(vector<MonHoc> &ds) {
     MonHoc mh;
     cout << "Nhap ma mon: ";
-    cin.getline(mh.ma, 20);
+    getline(cin, mh.ma);
     cout << "Nhap ten mon: ";
-    cin.getline(mh.ten, 100);
+    getline(cin, mh.ten);
     cout << "Nhap so tin chi: ";
     cin >> mh.tinchi;
     cin.ignore();
 
-    ds[n++] = mh;
+    ds.push_back(mh);
     cout << "Da them mon hoc thanh cong!\n";
 }
 
-void hienThi(MonHoc ds[], int n) {
-    if (n == 0) {
+// ====== Xóa môn h?c theo m? ======
+void xoaMonHoc(vector<MonHoc> &ds) {
+    if (ds.empty()) {
+        cout << "Danh sach rong, khong the xoa!\n";
+        return;
+    }
+
+    string maXoa;
+    cout << "Nhap ma mon can xoa: ";
+    getline(cin, maXoa);
+
+    bool timThay = false;
+    for (vector<MonHoc>::iterator it = ds.begin(); it != ds.end(); ++it) {
+        if (it->ma == maXoa) {
+            ds.erase(it);
+            timThay = true;
+            cout << "Da xoa mon hoc co ma " << maXoa << ".\n";
+            break;
+        }
+    }
+
+    if (!timThay)
+        cout << "Khong tim thay mon hoc co ma " << maXoa << ".\n";
+}
+
+// ====== Hi?n th? danh sách ======
+void hienThiDanhSach(const vector<MonHoc> &ds) {
+    if (ds.empty()) {
         cout << "Danh sach rong!\n";
         return;
     }
 
     cout << "\n===== DANH SACH MON HOC =====\n";
-    for (int i = 0; i < n; i++) {
+    for (size_t i = 0; i < ds.size(); i++) {
         cout << i + 1 << ". Ma: " << ds[i].ma
              << " | Ten: " << ds[i].ten
              << " | Tin chi: " << ds[i].tinchi << "\n";
     }
 }
 
-void xoaMonHoc(MonHoc ds[], int &n) {
-    if (n == 0) {
-        cout << "Danh sach rong!\n";
-        return;
-    }
-
-    char maXoa[20];
-    cout << "Nhap ma mon can xoa: ";
-    cin.getline(maXoa, 20);
-
-    int vt = -1;
-    for (int i = 0; i < n; i++) {
-        if (strcmp(ds[i].ma, maXoa) == 0) {
-            vt = i;
-            break;
-        }
-    }
-
-    if (vt == -1) {
-        cout << "Khong tim thay mon hoc co ma " << maXoa << ".\n";
-        return;
-    }
-
-    for (int i = vt; i < n - 1; i++) {
-        ds[i] = ds[i + 1];
-    }
-    n--;
-
-    cout << "Da xoa mon hoc co ma " << maXoa << ".\n";
-}
-
-void tinhTongTinChi(MonHoc ds[], int n) {
+// ====== Tính t?ng s? tín ch? ======
+void tinhTongTinChi(const vector<MonHoc> &ds) {
     int tong = 0;
-    for (int i = 0; i < n; i++) {
+    for (size_t i = 0; i < ds.size(); i++)
         tong += ds[i].tinchi;
-    }
+
     cout << "Tong so tin chi da dang ky: " << tong << "\n";
 }
 
+// ====== Menu chính ======
 void menu() {
-    MonHoc ds[200];
-    int n = 0;
-    char tenFile[] = "monhoc.txt";
-
-    docFile(ds, n, tenFile);
+    vector<MonHoc> ds;
+    string tenFile = "monhoc.txt";
+    docFile(ds, tenFile);
 
     int chon;
     do {
@@ -130,18 +131,18 @@ void menu() {
         cout << "2. Xoa mon hoc\n";
         cout << "3. Tinh tong so tin chi\n";
         cout << "4. Hien thi danh sach mon hoc\n";
-        cout << "5. Thoat\n";
+        cout << "5. Luu va thoat\n";
         cout << "Chon: ";
         cin >> chon;
         cin.ignore();
 
         switch (chon) {
-            case 1: themMonHoc(ds, n); break;
-            case 2: xoaMonHoc(ds, n); break;
-            case 3: tinhTongTinChi(ds, n); break;
-            case 4: hienThi(ds, n); break;
+            case 1: themMonHoc(ds); break;
+            case 2: xoaMonHoc(ds); break;
+            case 3: tinhTongTinChi(ds); break;
+            case 4: hienThiDanhSach(ds); break;
             case 5:
-                ghiFile(ds, n, tenFile);
+                ghiFile(ds, tenFile);
                 cout << "Thoat chuong trinh.\n";
                 break;
             default:
@@ -150,6 +151,7 @@ void menu() {
     } while (chon != 5);
 }
 
+// ====== Hàm main ======
 int main() {
     menu();
     return 0;

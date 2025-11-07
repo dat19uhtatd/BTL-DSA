@@ -1,6 +1,6 @@
 #include <iostream>
-#include <vector>
 #include <fstream>
+#include <vector>
 #include <string>
 #include <sstream>
 using namespace std;
@@ -11,51 +11,50 @@ struct MonHoc {
     int tinchi;
 };
 
-// ======== Các hàm xử lý ========
+// =================== CÁC HÀM XỬ LÝ ===================
 
 // Đọc dữ liệu từ file
 void docFile(vector<MonHoc> &ds, const string &tenFile) {
-    ifstream file(tenFile);
-    if (!file.is_open()) {
+    ifstream f(tenFile.c_str());
+    if (!f.is_open()) {
         cout << "Khong tim thay file, bat dau voi danh sach rong.\n";
         return;
     }
 
     ds.clear();
-    string line;
-    while (getline(file, line)) {
-        stringstream ss(line);
+    string dong;
+    while (getline(f, dong)) {
+        stringstream ss(dong);
         MonHoc mh;
         string tinchiStr;
 
         getline(ss, mh.ma, '|');
         getline(ss, mh.ten, '|');
         getline(ss, tinchiStr, '|');
-        mh.tinchi = stoi(tinchiStr);
-
+        mh.tinchi = atoi(tinchiStr.c_str());
         ds.push_back(mh);
     }
-    file.close();
+    f.close();
     cout << "Da doc " << ds.size() << " mon hoc tu file.\n";
 }
 
 // Ghi dữ liệu ra file
 void ghiFile(const vector<MonHoc> &ds, const string &tenFile) {
-    ofstream file(tenFile);
-    if (!file.is_open()) {
+    ofstream f(tenFile.c_str());
+    if (!f.is_open()) {
         cout << "Khong the mo file de ghi!\n";
         return;
     }
 
-    for (const auto &mh : ds) {
-        file << mh.ma << "|" << mh.ten << "|" << mh.tinchi << "\n";
+    for (size_t i = 0; i < ds.size(); i++) {
+        f << ds[i].ma << "|" << ds[i].ten << "|" << ds[i].tinchi << "\n";
     }
 
-    file.close();
+    f.close();
     cout << "Da luu du lieu vao file " << tenFile << ".\n";
 }
 
-// Thêm môn học
+// Thêm môn học mới
 void themMonHoc(vector<MonHoc> &ds) {
     MonHoc mh;
     cout << "Nhap ma mon: ";
@@ -70,7 +69,7 @@ void themMonHoc(vector<MonHoc> &ds) {
     cout << "Da them mon hoc thanh cong!\n";
 }
 
-// Hiển thị danh sách
+// Hiển thị danh sách môn học
 void hienThiDanhSach(const vector<MonHoc> &ds) {
     if (ds.empty()) {
         cout << "Danh sach rong!\n";
@@ -78,7 +77,7 @@ void hienThiDanhSach(const vector<MonHoc> &ds) {
     }
 
     cout << "\n===== DANH SACH MON HOC =====\n";
-    for (size_t i = 0; i < ds.size(); ++i) {
+    for (size_t i = 0; i < ds.size(); i++) {
         cout << i + 1 << ". Ma: " << ds[i].ma
              << " | Ten: " << ds[i].ten
              << " | Tin chi: " << ds[i].tinchi << "\n";
@@ -97,9 +96,9 @@ void xoaMonHoc(vector<MonHoc> &ds) {
     getline(cin, maXoa);
 
     bool timThay = false;
-    for (auto it = ds.begin(); it != ds.end(); ++it) {
-        if (it->ma == maXoa) {
-            ds.erase(it);
+    for (size_t i = 0; i < ds.size(); i++) {
+        if (ds[i].ma == maXoa) {
+            ds.erase(ds.begin() + i);
             timThay = true;
             cout << "Da xoa mon hoc co ma " << maXoa << ".\n";
             break;
@@ -110,16 +109,16 @@ void xoaMonHoc(vector<MonHoc> &ds) {
         cout << "Khong tim thay mon hoc co ma " << maXoa << ".\n";
 }
 
-// Tính tổng số tín chỉ
+// Tính tổng tín chỉ đã đăng ký
 void tinhTongTinChi(const vector<MonHoc> &ds) {
     int tong = 0;
-    for (const auto &mh : ds)
-        tong += mh.tinchi;
+    for (size_t i = 0; i < ds.size(); i++)
+        tong += ds[i].tinchi;
 
     cout << "Tong so tin chi da dang ky: " << tong << "\n";
 }
 
-// ======== Menu chính ========
+// =================== MENU CHÍNH ===================
 void menu() {
     vector<MonHoc> ds;
     string tenFile = "monhoc.txt";
@@ -127,32 +126,40 @@ void menu() {
 
     int chon;
     do {
-        cout << "\n===== MON HOC DA DANG KY =====\n";
-        cout << "1. Them mon hoc\n";
+        cout << "\n===== CHUONG TRINH QUAN LY MON HOC =====\n";
+        cout << "1. Them mon hoc moi\n";
         cout << "2. Xoa mon hoc\n";
         cout << "3. Tinh tong so tin chi\n";
         cout << "4. Hien thi danh sach mon hoc\n";
-        cout << "5. Luu va thoat\n";
-        cout << "Chon: ";
+        cout << "5. Luu du lieu va thoat\n";
+        cout << "Chon chuc nang: ";
         cin >> chon;
-        cin.ignore(); // loại bỏ ký tự xuống dòng còn lại
+        cin.ignore();
 
         switch (chon) {
-            case 1: themMonHoc(ds); break;
-            case 2: xoaMonHoc(ds); break;
-            case 3: tinhTongTinChi(ds); break;
-            case 4: hienThiDanhSach(ds); break;
+            case 1:
+                themMonHoc(ds);
+                break;
+            case 2:
+                xoaMonHoc(ds);
+                break;
+            case 3:
+                tinhTongTinChi(ds);
+                break;
+            case 4:
+                hienThiDanhSach(ds);
+                break;
             case 5:
                 ghiFile(ds, tenFile);
-                cout << "Thoat chuong trinh.\n";
+                cout << "Da luu va thoat chuong trinh.\n";
                 break;
             default:
-                cout << "Lua chon khong hop le!\n";
+                cout << "Lua chon khong hop le, vui long nhap lai.\n";
         }
     } while (chon != 5);
 }
 
-// ======== Hàm main ========
+// =================== HÀM MAIN ===================
 int main() {
     menu();
     return 0;

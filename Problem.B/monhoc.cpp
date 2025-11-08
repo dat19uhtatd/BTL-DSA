@@ -64,6 +64,14 @@ void themMonHoc(vector<MonHoc> &ds) {
     MonHoc mh;
     cout << "Nhap ma mon: ";
     getline(cin, mh.ma);
+
+    for (size_t i = 0; i < ds.size(); i++) {
+        if (ds[i].ma == mh.ma) {
+            cout << "Mon hoc co ma " << mh.ma << " da ton tai trong danh sach!\n";
+            return; // Không thêm nữa
+        }
+    }
+    
     cout << "Nhap ten mon: ";
     getline(cin, mh.ten);
     cout << "Nhap so tin chi: ";

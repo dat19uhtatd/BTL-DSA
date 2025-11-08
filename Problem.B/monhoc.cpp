@@ -6,14 +6,19 @@
 #include <cstdlib>  // cho atoi
 using namespace std;
 
-// ====== C?u trúc môn h?c ======
+// ====== Cau truc môn hoc ======
 struct MonHoc {
     string ma;
     string ten;
     int tinchi;
 };
 
-// ====== Đ?c d? li?u t? file ======
+//void themMonHoc(vector<MonHoc> &ds);
+//void xoaMonHoc(vector<MonHoc> &ds);
+//void hienThiDanhSach(const vector<MonHoc> &ds);
+//void tinhTongTinChi(const vector<MonHoc> &ds);
+
+// ====== Ðoc du lieu tu file ======
 void docFile(vector<MonHoc> &ds, const string &tenFile) {
     ifstream f(tenFile.c_str());
     if (!f.is_open()) {
@@ -39,7 +44,7 @@ void docFile(vector<MonHoc> &ds, const string &tenFile) {
     cout << "Da doc " << ds.size() << " mon hoc tu file.\n";
 }
 
-// ====== Ghi d? li?u ra file ======
+// ====== Ghi du lieu ra file ======
 void ghiFile(const vector<MonHoc> &ds, const string &tenFile) {
     ofstream f(tenFile.c_str());
     if (!f.is_open()) {
@@ -54,20 +59,11 @@ void ghiFile(const vector<MonHoc> &ds, const string &tenFile) {
     cout << "Da luu du lieu vao file " << tenFile << ".\n";
 }
 
-// ====== Thêm môn h?c ======
+// ====== Them mon hoc ======
 void themMonHoc(vector<MonHoc> &ds) {
     MonHoc mh;
     cout << "Nhap ma mon: ";
     getline(cin, mh.ma);
-
-    // --- Kiểm tra trùng mã ---
-    for (size_t i = 0; i < ds.size(); i++) {
-        if (ds[i].ma == mh.ma) {
-            cout << "Mon hoc co ma " << mh.ma << " da ton tai trong danh sach!\n";
-            return; // Không thêm nữa
-        }
-    }
-    
     cout << "Nhap ten mon: ";
     getline(cin, mh.ten);
     cout << "Nhap so tin chi: ";
@@ -78,7 +74,7 @@ void themMonHoc(vector<MonHoc> &ds) {
     cout << "Da them mon hoc thanh cong!\n";
 }
 
-// ====== Xóa môn h?c theo m? ======
+// ====== Xoa mon hoc theo ma ======
 void xoaMonHoc(vector<MonHoc> &ds) {
     if (ds.empty()) {
         cout << "Danh sach rong, khong the xoa!\n";
@@ -103,7 +99,7 @@ void xoaMonHoc(vector<MonHoc> &ds) {
         cout << "Khong tim thay mon hoc co ma " << maXoa << ".\n";
 }
 
-// ====== Hi?n th? danh sách ======
+// ====== Hien thi danh sach ======
 void hienThiDanhSach(const vector<MonHoc> &ds) {
     if (ds.empty()) {
         cout << "Danh sach rong!\n";
@@ -118,7 +114,7 @@ void hienThiDanhSach(const vector<MonHoc> &ds) {
     }
 }
 
-// ====== Tính t?ng s? tín ch? ======
+// ====== Tinh tong so tin chi ======
 void tinhTongTinChi(const vector<MonHoc> &ds) {
     int tong = 0;
     for (size_t i = 0; i < ds.size(); i++)
@@ -127,7 +123,7 @@ void tinhTongTinChi(const vector<MonHoc> &ds) {
     cout << "Tong so tin chi da dang ky: " << tong << "\n";
 }
 
-// ====== Menu chính ======
+// ====== Menu chinh ======
 void menu() {
     vector<MonHoc> ds;
     string tenFile = "monhoc.txt";
@@ -160,7 +156,7 @@ void menu() {
     } while (chon != 5);
 }
 
-// ====== Hàm main ======
+// ====== Ham main ======
 int main() {
     menu();
     return 0;
